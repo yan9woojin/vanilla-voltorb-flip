@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>찌리리공 뒤집기</title>
+    <link rel="icon" href="favicon.png" />
+    <link rel="stylesheet" href="./src/styles/style.scss" />
+  </head>
+  <body>
+    <!-- 게임 방법 모달 -->
+    <dialog class="modal" id="howToPlayModal">
+      <img src="./assets/images/description.png" alt="게임 방법" />
+      <form method="dialog" class="modal__actions">
+        <button class="modal__action">닫기</button>
+      </form>
+    </dialog>
+
+    <!-- 오디오 -->
+    <audio controls loop class="hide" id="bgm">
+      <source src="./assets/audios/bgm.mp3" />
+    </audio>
+
+    <!-- 게임 -->
+    <main class="game">
+      <!-- 메뉴 -->
+      <section class="menu" id="menu">
+        <div class="menu__card">
+          <div class="card__inner">
+            <div class="card__front">
+              <img src="./assets/images/cardVoltorb.png" alt="찌리리공 카드" />
+            </div>
+            <div class="card__back">
+              <img src="./assets/images/cardOne.png" alt="코인 카드" />
+            </div>
+          </div>
+        </div>
+        <h1 class="menu__title">찌리리공 뒤집기</h1>
+        <div class="menu__actions">
+          <button type="button" class="menu__action menu__action--how-to-play" id="howToPlayBtn">
+            게임 방법
+          </button>
+          <button type="button" class="menu__action menu__action--play" id="playBtn">
+            게임 시작
+          </button>
+        </div>
+      </section>
+
+      <!-- 정보창 -->
+      <section class="status hide" id="status">
+        <div class="status__total-coin">
+          <p class="status__title">나의 코인</p>
+          <div class="status__content">
+            <img src="./assets/images/coin.png" alt="코인" class="status__img" />
+            <span id="totalCoin">00000</span>
+          </div>
+        </div>
+        <div class="status__current-coin">
+          <p class="status__title">현재 얻은 코인</p>
+          <div class="status__content">
+            <img src="./assets/images/coin.png" alt="코인" class="status__img" />
+            <span id="currentCoin">00000</span>
+          </div>
+        </div>
+        <div class="status__current-level">
+          <p class="status__title">Lv. <span id="currentLevel">1</span></p>
+        </div>
+      </section>
+
+      <!-- 카드 -->
+      <section class="board hide" id="board">
+        <!-- 0행 -->
+        <div class="board__row" data-rows="0">
+          <div class="card info-card info-card--first" data-info>
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+
+        <!-- 1행 -->
+        <div class="board__row" data-rows="1">
+          <div class="card info-card info-card--second" data-info>
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+
+        <!-- 2행 -->
+        <div class="board__row" data-rows="2">
+          <div class="card info-card info-card--third" data-info>
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+
+        <!-- 3행 -->
+        <div class="board__row" data-rows="3">
+          <div class="card info-card info-card--fourth" data-info>
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+
+        <!-- 4행 -->
+        <div class="board__row" data-rows="4">
+          <div class="card info-card info-card--fifth" data-info>
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+
+        <!-- 5행 -->
+        <div class="board__row">
+          <div class="card info-card info-card--first">
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+          <div class="card info-card info-card--second">
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+          <div class="card info-card info-card--third">
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+          <div class="card info-card info-card--fourth">
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+          <div class="card info-card info-card--fifth">
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 카드 템플릿 -->
+    <template id="card-template">
+      <div class="card" tabindex="0" data-row="0" data-col="0">
+        <div class="card__inner">
+          <div class="card__front">
+            <span class="card__memo hide" data-memo="1">1</span>
+            <span class="card__memo hide" data-memo="2">2</span>
+            <span class="card__memo hide" data-memo="3">3</span>
+            <span class="card__memo hide" data-memo="4">●</span>
+          </div>
+          <div class="card__back"></div>
+        </div>
+      </div>
+    </template>
+
+    <script type="module" src="./src/App.js"></script>
+  </body>
+</html>

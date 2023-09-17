@@ -1,0 +1,249 @@
+.game {
+  @include flex(center, center, column, 1rem);
+  margin: 4rem auto;
+}
+
+.menu {
+  @include flex(center, center, column, 1rem);
+
+  &__card {
+    width: 64px;
+    height: 64px;
+    border: none;
+    cursor: default;
+
+    & .card__inner {
+      animation: rotating 4s linear infinite;
+    }
+
+    @keyframes rotating {
+      from {
+        transform: rotateY(0deg);
+      }
+      to {
+        transform: rotateY(360deg);
+      }
+    }
+  }
+
+  &__title {
+    color: #fff;
+    font-size: 2rem;
+    text-shadow: 1px 1px 1px #000;
+  }
+
+  &__actions {
+    @include flex(center, center, column, 8px);
+    width: 100px;
+    height: 80px;
+  }
+
+  &__action {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-size: 1rem;
+    text-shadow: 1px 1px 1px #000;
+    border: 2px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &--how-to-play {
+      background-color: $blue-color;
+
+      &:hover {
+        background-color: #0666c5;
+      }
+    }
+
+    &--play {
+      background-color: $red-color;
+
+      &:hover {
+        background-color: #b7421f;
+      }
+    }
+  }
+}
+
+.status {
+  @include flex(center, center, row, 8px);
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  background-color: #fff;
+  border: 4px solid #000;
+  border-radius: 4px;
+  text-align: center;
+
+  &__total-coin,
+  &__current-coin,
+  &__current-level {
+    @include flex(center, center, column, 4px);
+    flex-grow: 1;
+  }
+
+  &__img {
+    transform: translateY(3px);
+  }
+}
+
+.board {
+  @include flex(flex-start, flex-start, column, $card-gap);
+  background-image: url(../../assets/images/boardBackground.png);
+  padding: $card-gap;
+  border-radius: $card-border-radius;
+  border: 4px solid #fff;
+  outline: 2px solid #000;
+  position: relative;
+
+  &__row {
+    @include flex(flex-start, flex-start, row, $card-gap);
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.card {
+  width: $card-size;
+  height: $card-size;
+  border: $card-border-width solid #fff;
+  border-radius: $card-border-radius;
+  font-size: 24px;
+  background-color: $primary-color;
+  perspective: 1000px;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: #f84935;
+  }
+
+  &__inner {
+    width: $card-size - $card-border-width * 2;
+    height: $card-size - $card-border-width * 2;
+    position: relative;
+    text-align: center;
+    transition: transform $card-flip-delay ease-in-out;
+    transform-style: preserve-3d;
+  }
+
+  &__front,
+  &__back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+  }
+
+  &__front {
+    background-image: url(../../assets/images/cardFront.png);
+    display: grid;
+    grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+    justify-content: center;
+    align-items: center;
+    grid-template-areas:
+      "one two"
+      "three voltorb";
+  }
+
+  &__back {
+    transform: rotateY(180deg);
+  }
+
+  &__flipped &__inner {
+    transform: rotateY(180deg);
+  }
+
+  &[data-card="1"] &__back {
+    background-image: url(../../assets/images/cardOne.png);
+  }
+
+  &[data-card="2"] &__back {
+    background-image: url(../../assets/images/cardTwo.png);
+  }
+
+  &[data-card="3"] &__back {
+    background-image: url(../../assets/images/cardThree.png);
+  }
+
+  &[data-card="voltorb"] &__back {
+    background-image: url(../../assets/images/cardVoltorb.png);
+  }
+
+  &__memo {
+    color: #fdda35;
+
+    &[data-memo="1"] {
+      grid-area: one;
+      transform: translate(2px, -2px);
+    }
+
+    &[data-memo="2"] {
+      grid-area: two;
+      transform: translate(-2px, -2px);
+    }
+
+    &[data-memo="3"] {
+      grid-area: three;
+      transform: translate(2px, -5px);
+    }
+
+    &[data-memo="4"] {
+      grid-area: voltorb;
+      transform: scale(0.8) translate(-2px, -4px);
+    }
+  }
+}
+
+.info-card {
+  cursor: auto;
+  text-align: end;
+
+  &--first {
+    background-color: $red-color;
+  }
+
+  &--second {
+    background-color: $green-color;
+  }
+
+  &--third {
+    background-color: $orange-color;
+  }
+
+  &--fourth {
+    background-color: $blue-color;
+  }
+
+  &--fifth {
+    background-color: $purple-color;
+  }
+
+  &__coin {
+    transform: translate(-2px, -6px);
+    background: {
+      image: url(../../assets/images/coin.png);
+      repeat: no-repeat;
+      position: 6px 9px;
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      width: 104%;
+      height: $card-border-width;
+      background-color: #fff;
+    }
+  }
+
+  &__voltorb {
+    height: 60%;
+    transform: translate(-2px, -4px);
+    background: {
+      image: url(../../assets/images/voltorb.png);
+      repeat: no-repeat;
+      position: 6px 3px;
+    }
+  }
+}

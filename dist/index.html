@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>찌리리공 뒤집기</title>
+    <link rel="icon" href="favicon.png" />
+    
+    <script type="module" crossorigin src="./assets/index-0308373c.js"></script>
+    <link rel="stylesheet" href="./assets/index-bf9b0fc5.css">
+  </head>
+  <body>
+    <!-- 게임 방법 모달 -->
+    <dialog class="modal" id="howToPlayModal">
+      <img src="./assets/description-3a75aa7b.png" alt="게임 방법" />
+      <form method="dialog" class="modal__actions">
+        <button class="modal__action">닫기</button>
+      </form>
+    </dialog>
+
+    <!-- 오디오 -->
+    <audio controls loop class="hide" id="bgm">
+      <source src="./assets/bgm-f748036d.mp3" />
+    </audio>
+
+    <!-- 게임 -->
+    <main class="game">
+      <!-- 메뉴 -->
+      <section class="menu" id="menu">
+        <div class="menu__card">
+          <div class="card__inner">
+            <div class="card__front">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGOWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNy4yLWMwMDAgNzkuZGVlM2E3NzAzLCAyMDIyLzA4LzE4LTE2OjUwOjMwICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgMjMuNSAoTWFjaW50b3NoKSIgeG1wOkNyZWF0ZURhdGU9IjIwMjMtMDktMDlUMTQ6MTY6MjcrMDk6MDAiIHhtcDpNb2RpZnlEYXRlPSIyMDIzLTA5LTA5VDE0OjQzOjA3KzA5OjAwIiB4bXA6TWV0YWRhdGFEYXRlPSIyMDIzLTA5LTA5VDE0OjQzOjA3KzA5OjAwIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpiZGMyMzA0Yy00NDhlLTQ4ZjgtYWI3Ny0yMWVhNzI5ZDc5MDciIHhtcE1NOkRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDo0MGYxMDIwNi03NDQ2LWQzNDAtOWFmYi0zNWZjNWM4NTUwZmQiIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo2ZjkyYjJmZi03OGQwLTQ3NmUtOWU0Mi1iMWZhMjI1NTQ5YTUiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjcmVhdGVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjZmOTJiMmZmLTc4ZDAtNDc2ZS05ZTQyLWIxZmEyMjU1NDlhNSIgc3RFdnQ6d2hlbj0iMjAyMy0wOS0wOVQxNDoxNjoyNyswOTowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIDIzLjUgKE1hY2ludG9zaCkiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249ImNvbnZlcnRlZCIgc3RFdnQ6cGFyYW1ldGVycz0iZnJvbSBhcHBsaWNhdGlvbi92bmQuYWRvYmUucGhvdG9zaG9wIHRvIGltYWdlL3BuZyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6YmRjMjMwNGMtNDQ4ZS00OGY4LWFiNzctMjFlYTcyOWQ3OTA3IiBzdEV2dDp3aGVuPSIyMDIzLTA5LTA5VDE0OjQzOjA3KzA5OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgMjMuNSAoTWFjaW50b3NoKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8L3JkZjpTZXE+IDwveG1wTU06SGlzdG9yeT4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6nDm9YAAACCklEQVRoge2avU4CQRDHB2NrY6f2NooaY+wNiQlQ2ELBK1hYoL2NofQVLLSlUBMSQ2+M0aANvbyAL2CxuBluF293ZmQ9mV8Fx+zszvxnP+640la5DEVmIfUAuGgAqVnEX9p7xZgPnaeB/fy/FDCs7e7MfBihfDy/ZK4UXgENIDUaQGo0gNRoAKnx7MRk1g8OAy2H/Z5Up2IKhI8+1vhnuApkhlJttnKb3F9f4YZMNVgKiCSS6YSugO0YZ/1ifzW3Iba3apB1IAYwLW3lleWA1iOvQ1oMrDkQm3tsefY4sh6MDjTEltGw3GNLjw4EKAFk6uf2aJPgxLSqd9+wW0IVRa9Cgku4iHNiCZnaxVmM1QG34swEPQsB3DzcAUC9UrNXpqmBK960gss2s3dV4BuT0UalBr5Z4cm9EKqAD7e+sT6yzLcCn8cdAFhCmR7XvbO2GBv3V+MBunRl5lsBwziLADCpRog9n3lVwJxbqpUaTK7rsdk16xLnfiBaAcEnIiLOKQoM+z187m04OoTg7gkJbikx768DANjYzv+b0FhKwQpgPBOaLQA4PzmFMB2MJfbAgRhApoos5OzO+rEKoBhwFsOfzGVckYfB2gdEViSmE+4ktt27agQ2ZCK2E0cNSHAzkbwf+NU9bhqFPwtpAKnRAFKjAaRGA0iNZyd230v7yxRegZK+O50YDSA1X219t4AETTHvAAAAAElFTkSuQmCC" alt="찌리리공 카드" />
+            </div>
+            <div class="card__back">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAIkmlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNy4yLWMwMDAgNzkuZGVlM2E3NzAzLCAyMDIyLzA4LzE4LTE2OjUwOjMwICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIzLjUgKE1hY2ludG9zaCkiIHhtcDpDcmVhdGVEYXRlPSIyMDIzLTA5LTA5VDE0OjE2OjI3KzA5OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMy0wOS0wOVQxNToyOTo0NiswOTowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMy0wOS0wOVQxNToyOTo0NiswOTowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ZDhmMjAwOGEtNzE0ZC00NzBjLThhN2ItNDI0MmI1YmI3Yzg1IiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6OGRlZDg0MmItNzFhNy05NzRkLWJhNTctMDA2ODdiZDFjYjY3IiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6MDYwNDI4NzEtMTJhYy00Y2FlLWE4MTEtMDIyM2MyMzU4NTlhIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDowNjA0Mjg3MS0xMmFjLTRjYWUtYTgxMS0wMjIzYzIzNTg1OWEiIHN0RXZ0OndoZW49IjIwMjMtMDktMDlUMTQ6MTY6MjcrMDk6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCAyMy41IChNYWNpbnRvc2gpIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpkMDM0YmVjNi0wNWZiLTQ5M2EtYTIwZi04ODA3OGM1MzRjNmMiIHN0RXZ0OndoZW49IjIwMjMtMDktMDlUMTU6Mjk6NDYrMDk6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCAyMy41IChNYWNpbnRvc2gpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjb252ZXJ0ZWQiIHN0RXZ0OnBhcmFtZXRlcnM9ImZyb20gYXBwbGljYXRpb24vdm5kLmFkb2JlLnBob3Rvc2hvcCB0byBpbWFnZS9wbmciLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249ImRlcml2ZWQiIHN0RXZ0OnBhcmFtZXRlcnM9ImNvbnZlcnRlZCBmcm9tIGFwcGxpY2F0aW9uL3ZuZC5hZG9iZS5waG90b3Nob3AgdG8gaW1hZ2UvcG5nIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpkOGYyMDA4YS03MTRkLTQ3MGMtOGE3Yi00MjQyYjViYjdjODUiIHN0RXZ0OndoZW49IjIwMjMtMDktMDlUMTU6Mjk6NDYrMDk6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCAyMy41IChNYWNpbnRvc2gpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpkMDM0YmVjNi0wNWZiLTQ5M2EtYTIwZi04ODA3OGM1MzRjNmMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDYwNDI4NzEtMTJhYy00Y2FlLWE4MTEtMDIyM2MyMzU4NTlhIiBzdFJlZjpvcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6MDYwNDI4NzEtMTJhYy00Y2FlLWE4MTEtMDIyM2MyMzU4NTlhIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+mxU5hwAAAVZJREFUaIHtmrFKw1AUhm+LIKGFZOribqFQEfEFXAQfwcHX8CF8jQ59hIJLd5FSEArtWlw6JdASujlcCJK0Guif+3vk/6bkJtx7Pg4n/ENaV8Ohs0ybXcCpSIDN2feb51sb8/Dy/lFc/68OeC5uroOXUZfP2by0Yr4DEmAjATYSYCMBNhJgIwE25gUOxOnTOe90e/1BFCfFSp6lm+Viv9vCz8J3oFq9cy6Kk15/AD/LYTtQKv3h8al4NBmPSkookB04Vn2jIDvgqw9Wusf8V0gCbJAzkGdpFCeT8cjfhhkGZAc2y0WepcAN64AU2O+269nbavoK3PNXzM+ABNg0mIWqXN7dw2NpU1noGPBYGigLFYvwWGp+BiTApsEs9MNrwENDZyH/GQUeiuyAz0LADetgfgYkwEYCbCTARgJsJMBGAmzMCxyI09X/0v4y5jvQ0r/TZCTA5gvRy1VBKi2A8AAAAABJRU5ErkJggg==" alt="코인 카드" />
+            </div>
+          </div>
+        </div>
+        <h1 class="menu__title">찌리리공 뒤집기</h1>
+        <div class="menu__actions">
+          <button type="button" class="menu__action menu__action--how-to-play" id="howToPlayBtn">
+            게임 방법
+          </button>
+          <button type="button" class="menu__action menu__action--play" id="playBtn">
+            게임 시작
+          </button>
+        </div>
+      </section>
+
+      <!-- 정보창 -->
+      <section class="status hide" id="status">
+        <div class="status__total-coin">
+          <p class="status__title">나의 코인</p>
+          <div class="status__content">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAQCAYAAAAiYZ4HAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDcuMi1jMDAwIDc5LmRlZTNhNzcwMywgMjAyMi8wOC8xOC0xNjo1MDozMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIzLjUgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QkRDMDlCRDM0NkY3MTFFRTg5OTVDQUQwN0ZBNDUxNjEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QkRDMDlCRDQ0NkY3MTFFRTg5OTVDQUQwN0ZBNDUxNjEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCREMwOUJEMTQ2RjcxMUVFODk5NUNBRDA3RkE0NTE2MSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCREMwOUJEMjQ2RjcxMUVFODk5NUNBRDA3RkE0NTE2MSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PlRqhxMAAACuSURBVHjaYvx7y5SBSfUUAwj8f1b8nwELYJTqZYSz////z/DvthkDI7ft//9fD2NTz7Bl3wcGHycBsCYmsC48ikEAqBik6T/IJSzokreOXUfhq1lpojrv39MiuOkwxTBF6HyQ05jQbUA2Ed10uB9IAcNSA3I8oMcJPGmA0hB6XKAHLSgO/NJvMbLgiwesTgIlPKDpjCATcAHkxMeInLw3zVTDmrxBTgHRIMMBAgwAbRtXQchH9MsAAAAASUVORK5CYII=" alt="코인" class="status__img" />
+            <span id="totalCoin">00000</span>
+          </div>
+        </div>
+        <div class="status__current-coin">
+          <p class="status__title">현재 얻은 코인</p>
+          <div class="status__content">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAQCAYAAAAiYZ4HAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDcuMi1jMDAwIDc5LmRlZTNhNzcwMywgMjAyMi8wOC8xOC0xNjo1MDozMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIzLjUgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QkRDMDlCRDM0NkY3MTFFRTg5OTVDQUQwN0ZBNDUxNjEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QkRDMDlCRDQ0NkY3MTFFRTg5OTVDQUQwN0ZBNDUxNjEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCREMwOUJEMTQ2RjcxMUVFODk5NUNBRDA3RkE0NTE2MSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCREMwOUJEMjQ2RjcxMUVFODk5NUNBRDA3RkE0NTE2MSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PlRqhxMAAACuSURBVHjaYvx7y5SBSfUUAwj8f1b8nwELYJTqZYSz////z/DvthkDI7ft//9fD2NTz7Bl3wcGHycBsCYmsC48ikEAqBik6T/IJSzokreOXUfhq1lpojrv39MiuOkwxTBF6HyQ05jQbUA2Ed10uB9IAcNSA3I8oMcJPGmA0hB6XKAHLSgO/NJvMbLgiwesTgIlPKDpjCATcAHkxMeInLw3zVTDmrxBTgHRIMMBAgwAbRtXQchH9MsAAAAASUVORK5CYII=" alt="코인" class="status__img" />
+            <span id="currentCoin">00000</span>
+          </div>
+        </div>
+        <div class="status__current-level">
+          <p class="status__title">Lv. <span id="currentLevel">1</span></p>
+        </div>
+      </section>
+
+      <!-- 카드 -->
+      <section class="board hide" id="board">
+        <!-- 0행 -->
+        <div class="board__row" data-rows="0">
+          <div class="card info-card info-card--first" data-info>
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+
+        <!-- 1행 -->
+        <div class="board__row" data-rows="1">
+          <div class="card info-card info-card--second" data-info>
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+
+        <!-- 2행 -->
+        <div class="board__row" data-rows="2">
+          <div class="card info-card info-card--third" data-info>
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+
+        <!-- 3행 -->
+        <div class="board__row" data-rows="3">
+          <div class="card info-card info-card--fourth" data-info>
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+
+        <!-- 4행 -->
+        <div class="board__row" data-rows="4">
+          <div class="card info-card info-card--fifth" data-info>
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+
+        <!-- 5행 -->
+        <div class="board__row">
+          <div class="card info-card info-card--first">
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+          <div class="card info-card info-card--second">
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+          <div class="card info-card info-card--third">
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+          <div class="card info-card info-card--fourth">
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+          <div class="card info-card info-card--fifth">
+            <div class="info-card__coin" data-coin-info></div>
+            <div class="info-card__voltorb" data-voltorb-info></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 카드 템플릿 -->
+    <template id="card-template">
+      <div class="card" tabindex="0" data-row="0" data-col="0">
+        <div class="card__inner">
+          <div class="card__front">
+            <span class="card__memo hide" data-memo="1">1</span>
+            <span class="card__memo hide" data-memo="2">2</span>
+            <span class="card__memo hide" data-memo="3">3</span>
+            <span class="card__memo hide" data-memo="4">●</span>
+          </div>
+          <div class="card__back"></div>
+        </div>
+      </div>
+    </template>
+
+    
+  </body>
+</html>

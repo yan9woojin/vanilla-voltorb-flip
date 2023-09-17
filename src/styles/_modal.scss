@@ -1,0 +1,32 @@
+.modal {
+  margin: 80px auto;
+  background-color: transparent;
+  border: none;
+
+  &::backdrop {
+    background-color: #25734f;
+  }
+
+  &__actions {
+    @include flex(space-between, center);
+    width: 100%;
+    margin: 40px 0;
+  }
+
+  &__action {
+    width: 64px;
+    height: 32px;
+    color: #fff;
+    font-size: 1rem;
+    text-shadow: 1px 1px 1px #000;
+    border: 2px solid black;
+    border-radius: 4px;
+    margin: 0 auto;
+    cursor: pointer;
+    background-color: $blue-color;
+
+    &:hover {
+      background-color: #0666c5;
+    }
+  }
+}
